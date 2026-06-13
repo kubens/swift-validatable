@@ -64,6 +64,6 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild test \
-            -scheme swift-validatable-Package \
+            -scheme swift-validatable \
             -destination '${{ matrix.destination }}' \
             | xcpretty
