@@ -17,6 +17,7 @@ struct ValidatorStringTests {
         "user.name+tag@domain.co.uk",
         "user_name@sub.domain.com",
       ])
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     func passesForValidEmail(email: String) {
       let result = Validator<String>.email.validate(email)
       guard case .success = result else {
@@ -35,6 +36,7 @@ struct ValidatorStringTests {
         "user..name@domain.com",
         ".user@domain.com",
       ])
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     func failsForInvalidEmail(email: String) {
       let result = Validator<String>.email.validate(email)
       guard case .failure = result else {
@@ -44,6 +46,7 @@ struct ValidatorStringTests {
     }
 
     @Test("failure contains expected reason")
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     func failureReason() {
       let result = Validator<String>.email.validate("notanemail")
       guard case .failure(let failure) = result else {
@@ -66,6 +69,7 @@ struct ValidatorStringTests {
         "+12125551234",
         "+447911123456",
       ])
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     func passesForValidNumber(phone: String) {
       let result = Validator<String>.e164.validate(phone)
       guard case .success = result else {
@@ -83,6 +87,7 @@ struct ValidatorStringTests {
         "+1",
         "123",
       ])
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     func failsForInvalidNumber(phone: String) {
       let result = Validator<String>.e164.validate(phone)
       guard case .failure = result else {
@@ -92,6 +97,7 @@ struct ValidatorStringTests {
     }
 
     @Test("failure contains expected reason")
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     func failureReason() {
       let result = Validator<String>.e164.validate("123")
       guard case .failure(let failure) = result else {
