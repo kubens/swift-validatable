@@ -101,3 +101,52 @@ struct ValidationsOptionalTests {
     #expect(validations.failures["role"] != nil)
   }
 }
+
+@Suite("Validations item predicate")
+struct ValidationsItemPredicateTests {
+
+  private struct Stub: Sendable {
+    let start: Int
+    let end: Int
+  }
+
+  @Test("passing predicate has no failures")
+  func passingPredicateHasNoFailures() {
+    var validations = Validations(Stub(start: 1, end: 2))
+    validations.add("start must be before end") { item in
+      item.start < item.end
+    }
+
+    #expect(validations.failures.isEmpty)
+  }
+
+  @Test("failing predicate records reason")
+  func failingPredicateRecordsReason() {
+    var validations = Validations(Stub(start: 2, end: 1))
+    validations.add("start must be before end") { item in
+      item.start < item.end
+    }
+
+    let reasons = validations.failures.values.flatMap { failures in
+      failures.map(\.reason)
+    }
+
+    #expect(reasons == ["start must be before end"])
+  }
+
+  @Test("multiple predicates are appended to the same item validation")
+  func multiplePredicatesAreAppendedToSameItemValidation() {
+    var validations = Validations(Stub(start: 2, end: 1))
+    let key = String(describing: Stub.self)
+
+    validations.add("start must be before end") { item in
+      item.start < item.end
+    }
+    validations.add("range must be non-empty") { item in
+      item.start != item.end
+    }
+
+    #expect(validations.results[key]?.count == 2)
+    #expect(validations.failures[key]?.map(\.reason) == ["start must be before end"])
+  }
+}
