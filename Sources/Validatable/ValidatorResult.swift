@@ -1,10 +1,20 @@
-/// The result of a validation.
+/// The result returned by a validator.
+///
+/// Validators return `.success` when a value satisfies a rule and `.failure(_:)` when it does not.
+/// You usually work with this type when creating custom validators with
+/// ``Validator/init(validate:)``.
+///
+/// ```swift
+/// let maximum = Validator<Int> { value in
+///   value <= 10 ? .success : .failure(.init(reason: "must be at most 10"))
+/// }
+/// ```
 public enum ValidatorResult: Sendable {
 
-  /// A validation failure.
+  /// Information about a failed validation.
   public struct Failure: Error, Sendable {
 
-    /// The reason the validation failed.
+    /// A human-readable explanation of why validation failed.
     public let reason: String
   }
 
